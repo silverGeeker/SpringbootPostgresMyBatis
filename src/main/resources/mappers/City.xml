@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.postgres.mappers.CityMapper">
+
+	<select id="getAllCities" resultType="com.postgres.model.City">
+		SELECT name, population
+		FROM cities
+	</select>
+
+	<select id="getCityPopulationByName"
+		resultType="com.postgres.model.City">
+		SELECT name, population FROM cities WHERE name = #{name}
+	</select>
+
+	<update id="updateCityPopulationByName">
+		UPDATE cities SET population = #{population} WHERE
+		name = #{name}
+	</update>
+
+	<delete id="deleteCity">
+		DELETE FROM cities WHERE name = #{name}
+	</delete>
+
+	<insert id="createCity" parameterType="com.postgres.model.City">
+		<!-- useGeneratedKeys="true" keyProperty="id" keyColumn="id" -->
+		INSERT INTO
+		cities(name, population) VALUES (#{name}, #{population})
+	</insert>
+
+</mapper>
