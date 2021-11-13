@@ -9,17 +9,22 @@
 		FROM cities
 	</select>
 
-	<select id="getCityPopulationByName"
-		resultType="com.postgres.model.City">
+	<resultMap id="getCityPopulationByNameMap" type="com.postgres.model.City">
+		<result property="name" column="name" />
+		<result property="population" column="population" />
+	</resultMap>
+
+	<select id="getCityPopulationByNamedao"
+		resultMap="getCityPopulationByNameMap" parameterType="com.postgres.model.City">
 		SELECT name, population FROM cities WHERE name = #{name}
 	</select>
 
-	<update id="updateCityPopulationByName">
+	<update id="updateCityPopulationByName" parameterType="com.postgres.model.City">
 		UPDATE cities SET population = #{population} WHERE
 		name = #{name}
 	</update>
 
-	<delete id="deleteCity">
+	<delete id="deleteCitydao" parameterType="com.postgres.model.City">
 		DELETE FROM cities WHERE name = #{name}
 	</delete>
 

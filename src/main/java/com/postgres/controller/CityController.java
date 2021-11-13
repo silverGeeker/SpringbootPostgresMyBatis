@@ -1,7 +1,10 @@
 package com.postgres.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,45 +18,70 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.postgres.model.City;
 import com.postgres.service.CityService;
+import com.postgres.service.impl.CityServiceImpl;
 
 @RestController
 public class CityController {
+	
+	private static final Logger LOGGER = LogManager.getLogger(CityServiceImpl.class.getName());
+	private static final String EXCEPTION_MSG = "Exception occured";
 
 	@Autowired
 	private CityService cityService;
 
-	@GetMapping("/v1/cities")
+	@GetMapping("/v1/getAllCities")
 	public ResponseEntity<List<City>> getAllCities() {
 		List<City> cities = cityService.getAllCities();
 		return new ResponseEntity<>(cities, HttpStatus.OK);
 	}
 
-	@GetMapping("/v1/cities/{name}")
-	public ResponseEntity<City> getCityPopulationByName(@PathVariable String name) {
-		City city = cityService.getCityPopulationByName(name);
-		return new ResponseEntity<>(city, HttpStatus.OK);
+	@PostMapping("/v1/getCityPopulationByName")
+	public Map<String, Object> getCityPopulationByName(@RequestBody City cityObj, HttpServletRequest req) {
+		Map<String, Object> resultMap = new HashMap<>();
+		try{
+			resultMap=cityService.getCityPopulationByName(cityObj);
+		}catch(Exception e){
+			LOGGER.error("Exception"+e.getCause());
+		}
+		return resultMap;
 	}
 
-	@PostMapping("/v1/cities")
-	public ResponseEntity<Object> createCity(@Valid @RequestBody City city) {
-		City insertedCity = cityService.createCity(city);
-		return new ResponseEntity<>(insertedCity, HttpStatus.OK);
+	@PostMapping("/v1/createCity")
+	public Map<String, Object> createCity(@Valid @RequestBody City city, HttpServletRequest req) {
+		Map<String, Object> resultMap = new HashMap<>();
+		try{
+			resultMap=cityService.createCity(city);
+		}catch(Exception e){
+			LOGGER.error("Exception"+e.getCause());
+		}
+		return resultMap;
 	}
 
-	@PutMapping("v1/cities/{name}")
-	public ResponseEntity<City> updateCityPopulationByName(@PathVariable String name, @RequestParam int population) {
-		cityService.updateCityPopulationByName(name, population);
-		City city = cityService.getCityPopulationByName(name);
-		return new ResponseEntity<>(city, HttpStatus.OK);
+	@PostMapping("v1/updateCities")
+	public Map<String, Object> updateCityPopulationByName(@RequestBody City cityObj, HttpServletRequest req) {
+		Map<String, Object> resultMap = new HashMap<>();
+		try{
+			resultMap=cityService.updateCityPopulationByName(cityObj);
+		}catch(Exception e){
+			LOGGER.error("Exception"+e.getCause());
+		}
+		return resultMap;
 	}
-
-	@DeleteMapping("v1/cities/{name}")
-	public ResponseEntity<String> deleteCity(@PathVariable String name) {
-		cityService.deleteCity(name);
-		return new ResponseEntity<>("All cities with name=" + name + " has been deleted", HttpStatus.OK);
+	
+	@PostMapping("v1/deleteCities")
+	public Map<String, Object> deleteCity(@RequestBody City cityObj, HttpServletRequest req) {
+		Map<String, Object> resultMap = new HashMap<>();
+		try{
+			resultMap=cityService.deleteCity(cityObj);
+		}catch(Exception e){
+			LOGGER.error("Exception"+e.getCause());
+		}
+		return resultMap;
 	}
 
 }

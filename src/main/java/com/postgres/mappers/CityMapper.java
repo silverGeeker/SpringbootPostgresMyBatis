@@ -11,11 +11,11 @@ public interface CityMapper {
 
 	public List<City> getAllCities();
 
-	public City getCityPopulationByName(String name);
+	public City getCityPopulationByNamedao(City cityObj);
 
-	public boolean updateCityPopulationByName(String name, int population);
+	public boolean updateCityPopulationByName(City cityObj);
 
-	public boolean deleteCity(String name);
+	public boolean deleteCitydao(City cityObj);
 
 	public int createCity(City city);
 }

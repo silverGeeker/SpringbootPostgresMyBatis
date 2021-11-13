@@ -20,25 +20,24 @@ public class CityDao {
 		return mapper.getAllCities();
 	}
 
-	public City getCityPopulationByName(String name) {
+	public City getCityPopulationByNamedao(City cityObj) {
 		CityMapper mapper = sqlSession.getMapper(CityMapper.class);
-		return mapper.getCityPopulationByName(name);
+		return mapper.getCityPopulationByNamedao(cityObj);
 	}
 
-	public boolean updateCityPopulationByName(String name, int population) {
+	public boolean updateCityPopulationByName(City cityObj) {
 		CityMapper mapper = sqlSession.getMapper(CityMapper.class);
-		return mapper.updateCityPopulationByName(name, population);
+		return mapper.updateCityPopulationByName(cityObj);
 	}
 
-	public boolean deleteCity(String name) {
+	public boolean deleteCitydao(City cityObj) {
 		CityMapper mapper = sqlSession.getMapper(CityMapper.class);
-		return mapper.deleteCity(name);
+		return mapper.deleteCitydao(cityObj);
 	}
 
-	public City createCity(City city) {
+	public int createCity(City city) {
 		CityMapper mapper = sqlSession.getMapper(CityMapper.class);
-		mapper.createCity(city);
-		return city;
+		return mapper.createCity(city);
 	}
 
 }

@@ -1,7 +1,12 @@
 package com.postgres.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,33 +17,94 @@ import com.postgres.service.CityService;
 @Service
 public class CityServiceImpl implements CityService {
 
-  @Autowired
-  private CityDao cityDao;
+	private static final Logger LOGGER = LogManager.getLogger(CityServiceImpl.class.getName());
+	private static final String EXCEPTION_MSG = "Exception occured";
 
-  @Override
-  public List<City> getAllCities() {
-    return cityDao.getAllCities();
-  }
+	@Autowired
+	private CityDao cityDao;
 
-  @Override
-  public City getCityPopulationByName(String name) {
-    return cityDao.getCityPopulationByName(name);
-  }
+	@Override
+	public List<City> getAllCities() {
+		return cityDao.getAllCities();
+	}
 
-  @Override
-  public boolean updateCityPopulationByName(String name, int population) {
-    return cityDao.updateCityPopulationByName(name, population);
-  }
+	@Override
+	public Map<String, Object> getCityPopulationByName(City cityObj) {
+		Map<String, Object> resultMap = new HashMap<>();
+		List<String> errorList = new ArrayList<>();
 
-  @Override
-  public boolean deleteCity(String name) {
-    return cityDao.deleteCity(name);
-  }
+		cityObj = cityDao.getCityPopulationByNamedao(cityObj);
 
-  @Override
-  public City createCity(City city) {
-    cityDao.createCity(city);
-    return city;
-  }
+		// boolean cityExists=true;
+		if (errorList.isEmpty()) {
+			resultMap.put("status", "success");
+			resultMap.put("CityPopulation", cityObj);
+			resultMap.put("errorList", errorList);
+			resultMap.put("message", "City Found");
+		} else {
+			resultMap.put("status", "success");
+			resultMap.put("errorList", errorList);
+			resultMap.put("message", "City Not Found");
+		}
+		return resultMap;
+	}
+
+	@Override
+	public Map<String, Object> updateCityPopulationByName(City city) {
+		Map<String, Object> resultMap = new HashMap<>();
+		List<String> errorList = new ArrayList<>();
+		
+		cityDao.updateCityPopulationByName(city);
+		
+		if (errorList.isEmpty()) {
+			resultMap.put("status", "success");
+			resultMap.put("errorList", errorList);
+			resultMap.put("message", "City Update");
+		} else {
+			resultMap.put("status", "success");
+			resultMap.put("errorList", errorList);
+			resultMap.put("message", "City unable to update");
+		}
+		return resultMap;
+	}
+
+	@Override
+	public Map<String, Object> deleteCity(City cityObj) {
+		Map<String, Object> resultMap = new HashMap<>();
+		List<String> errorList = new ArrayList<>();
+		
+		cityDao.deleteCitydao(cityObj);
+		
+		if (errorList.isEmpty()) {
+			resultMap.put("status", "success");
+			resultMap.put("errorList", errorList);
+			resultMap.put("message", "City deleted");
+		} else {
+			resultMap.put("status", "success");
+			resultMap.put("errorList", errorList);
+			resultMap.put("message", "City unable to update");
+		}
+		return resultMap;
+		//return cityDao.deleteCity(name);
+	}
+
+	@Override
+	public Map<String, Object> createCity(City city) {
+		Map<String, Object> resultMap = new HashMap<>();
+		List<String> errorList = new ArrayList<>();
+		
+		cityDao.createCity(city);
+		
+		if (errorList.isEmpty()) {
+			resultMap.put("status", "success");
+			resultMap.put("errorList", errorList);
+			resultMap.put("message", "City Created");
+		} else {
+			resultMap.put("status", "success");
+			resultMap.put("errorList", errorList);
+			resultMap.put("message", "City unable to add");
+		}
+		return resultMap;
+	}
 
 }
