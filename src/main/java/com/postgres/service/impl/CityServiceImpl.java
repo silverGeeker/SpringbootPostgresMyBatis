@@ -82,7 +82,7 @@ public class CityServiceImpl implements CityService {
 		} else {
 			resultMap.put("status", "success");
 			resultMap.put("errorList", errorList);
-			resultMap.put("message", "City unable to update");
+			resultMap.put("message", "City unable to delete");
 		}
 		return resultMap;
 		//return cityDao.deleteCity(name);
