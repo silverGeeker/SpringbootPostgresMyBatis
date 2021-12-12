@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+//import org.apache.logging.log4j.LogManager;
+//import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +17,8 @@ import com.postgres.service.CityService;
 @Service
 public class CityServiceImpl implements CityService {
 
-	private static final Logger LOGGER = LogManager.getLogger(CityServiceImpl.class.getName());
-	private static final String EXCEPTION_MSG = "Exception occured";
+	//private static final Logger LOGGER = LogManager.getLogger(CityServiceImpl.class.getName());
+	//private static final String EXCEPTION_MSG = "Exception occured";
 
 	@Autowired
 	private CityDao cityDao;
